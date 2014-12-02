@@ -1,7 +1,7 @@
-hangman_gdi
+Hangman (Multi- & Singleplayer) simple Java Implementation
 ===========
 
-Hangman (Java 1.8, im Fach GDI HS Mannheim)
+Hangman (Java 1.8, im Fach GDI HS Mannheim, UIB1)
 
 Grundlagen der Informatik (UIB1) Live-Testat vom 01.12.2014
 
