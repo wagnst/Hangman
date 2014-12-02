@@ -1,6 +1,12 @@
 package HangMan;
-import java.util.Scanner;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 public class GameClass {
 
@@ -49,8 +55,8 @@ public class GameClass {
 
     private void initMatchString() {
         matchString = new StringBuilder(this.eingabeWort.length());
-        for(int i = 0; i < this.eingabeWort.length(); i++) {
-            this.matchString.replace(i,i,"_");
+        for (int i = 0; i < this.eingabeWort.length(); i++) {
+            this.matchString.replace(i, i, "_");
         }
     }
 
@@ -66,68 +72,61 @@ public class GameClass {
     /*
     zeichnet den Galgen, wobei n die Anzahl der Körperteile angibt, die bereits am Galgen hängen
      */
-    private void zeichneGalgen(int n) throws IOException, InterruptedException{
+    private void zeichneGalgen(int n) throws IOException, InterruptedException {
         // Match Sting mit Leerzeichen zwischen Buchstaben
-        StringBuilder matchStringBlanks = new StringBuilder(getMatchString().length()*2);
+        StringBuilder matchStringBlanks = new StringBuilder(getMatchString().length() * 2);
 
         // Ausgabefenster leeren
         cls();
 
         System.out.println(" ------");
         System.out.println(" |     |");
-        if(n == 0) {
+        if (n == 0) {
             System.out.println("       |");
             System.out.println("       |");
             System.out.println("       |");
             System.out.println("       |");
-        }
-        else if(n == 1) {
+        } else if (n == 1) {
             System.out.println(" O     |");
             System.out.println("       |");
             System.out.println("       |");
             System.out.println("       |");
-        }
-        else if(n == 2) {
+        } else if (n == 2) {
             System.out.println(" O     |");
             System.out.println("\\      |");
             System.out.println("       |");
             System.out.println("       |");
             System.out.println("       |");
             System.out.println("       |");
-        }
-        else if(n == 3) {
+        } else if (n == 3) {
             System.out.println(" O     |");
             System.out.println("\\ /    |");
-			System.out.println("       |");
-			System.out.println("       |");
-        }
-        else if(n == 4) {
+            System.out.println("       |");
+            System.out.println("       |");
+        } else if (n == 4) {
             System.out.println(" O     |");
             System.out.println("\\ /    |");
             System.out.println(" |     |");
             System.out.println("       |");
-        }
-        else if(n == 5) {
+        } else if (n == 5) {
             System.out.println(" O     |");
             System.out.println("\\ /    |");
             System.out.println(" |     |");
             System.out.println("/      |");
-        }
-        else if(n == 6) {
+        } else if (n == 6) {
             System.out.println(" O     |");
             System.out.println("\\ /    |");
             System.out.println(" |     |");
             System.out.println("/ \\    |");
             System.out.println("YOU DIED :(");
-        }
-        else {
+        } else {
             //hier kommen wir nie hin, wenn nur 6 Versuche erlaubt sind...
             System.out.println("Maximal 6 Versuche erlaubt, bitte ändern!");
         }
 
         //status output
         System.out.print("== Gesuchtes Wort:     ");
-        for(int i = 0; i < getMatchString().length(); i++) {
+        for (int i = 0; i < getMatchString().length(); i++) {
             System.out.print(this.matchString.charAt(i));
             System.out.print(" ");
         }
@@ -145,7 +144,7 @@ public class GameClass {
         - Lesen Sie das Wort mit scanner.nextLine() ein, damit der Rest der Zeile nicht bei der
             Eingabe des ersten Buchstabens durch Spieler 2 verwertet wird.
     */
-    protected void wortEingeben(Scanner scanner) throws IOException, InterruptedException{
+    protected void wortEingeben(Scanner scanner) throws IOException, InterruptedException {
         String eingabeWort = "", eingabeText = "Bitte ein Wort eingeben: \n";
 
         //Eingabetext ausgeben
@@ -167,6 +166,19 @@ public class GameClass {
         initMatchString();
     }
 
+    protected void startSingleplayer() throws IOException, InterruptedException {
+
+        //Leerzeilen einfügen
+        cls();
+
+        //Wort in Instanz setzen (Großbuchstaben)
+        this.setEingabeWort(getRandomWordFromDIC().toUpperCase());
+
+        //Matchstring initialisieren und mit "_" füllen
+        initMatchString();
+
+    }
+
     /*
     ermöglicht es Spieler 2, einen zu erratenden Buchstaben einzugeben.
             Tipps:
@@ -176,7 +188,7 @@ public class GameClass {
     Stringfunktion toUpper() in Großbuchstaben umgewandelt haben.
     */
     protected void buchstabenEingeben(Scanner scanner) {
-        char eingabeBuchstabe= ' ';
+        char eingabeBuchstabe = ' ';
         String eingabeText = "Bitte einen Buchstabe eingeben: \n";
 
         // Start Eingabe
@@ -207,9 +219,9 @@ public class GameClass {
 
         //Buchstabenstring und eingabewortstring durchloopen und nach übereinstimmenden Buchstaben suchen
         //durchsucht immer alles, da so von Prof. gefordert.. (TODO: normalerweise nur aktuell eingegebenen...)
-        for(int i = 0; i < getEingabeBuchstabe().length(); i++) {
+        for (int i = 0; i < getEingabeBuchstabe().length(); i++) {
             _BOOL = false;
-            for(int j = 0; j < getEingabeWort().length(); j++) {
+            for (int j = 0; j < getEingabeWort().length(); j++) {
                 // wenn Buchstabe gleich, setze Matchstring
                 if (this.eingabeWort.charAt(j) == this.eingabeBuchstabe.charAt(i)) {
                     setMatchString(this.eingabeWort.charAt(j), j);
@@ -262,6 +274,61 @@ public class GameClass {
         // Invoke the finalizer of our superclass
         // We haven't discussed superclasses or this syntax yet
         super.finalize();
+    }
+
+    /*
+    get a random word from german dictionary
+    int numberOfLetters: length of word (2-37)
+     */
+    private String getRandomWordFromDIC() throws IOException {
+        String[] dicWords;
+        int randomNumber;
+
+        //read from deWords.dic
+        dicWords = readLines("deWords.dic");
+        randomNumber = randInt(0, dicWords.length);
+
+        return dicWords[randomNumber];
+    }
+
+    /**
+     * Returns a pseudo-random number between min and max, inclusive.
+     * The difference between min and max can be at most
+     * <code>Integer.MAX_VALUE - 1</code>.
+     *
+     * @param min Minimum value
+     * @param max Maximum value.  Must be greater than min.
+     * @return Integer between min and max, inclusive.
+     * @see java.util.Random#nextInt(int)
+     */
+    private static int randInt(int min, int max) {
+
+        // NOTE: Usually this should be a field rather than a method
+        // variable so that it is not re-seeded every call.
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
+
+    /**
+     * Lesen einer UTF8 codierten Textdatei
+     *
+     * @return Stringarray (each line is an array entry)
+     */
+    public String[] readLines(String filename) throws IOException {
+        FileReader fileReader = new FileReader(filename);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        List<String> lines = new ArrayList<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            lines.add(line);
+        }
+        bufferedReader.close();
+        return lines.toArray(new String[lines.size()]);
     }
 
 }

@@ -1,4 +1,5 @@
 package HangMan;
+
 import java.util.Scanner;
 
 public class HangMan {
@@ -12,20 +13,31 @@ public class HangMan {
     public static void main(String ags[]) throws Throwable {
         //Scanner für Worteingabe
         Scanner wortScanner = new Scanner(System.in);
+        Scanner gameTypeInput = new Scanner(System.in);
+        Boolean singleplayer = false;
 
-        // Spiel erzeugen
+        // neues Spiel erzeugen
         GameClass SpielInstanz = new GameClass();
 
-        // Spieler 1: Wort eingeben!
-        SpielInstanz.wortEingeben(wortScanner);
+        //INPUT: check if singleplayer-mode should be started
+        System.out.println("Single- oder Multiplayer [1 | 0]?");
+        if (gameTypeInput.hasNextInt()) {
+            if (gameTypeInput.nextInt() == 1) {
+                // start singleplayer
+                SpielInstanz.startSingleplayer();
+            } else {
+                // start multiplayer - Spieler 1: Wort eingeben!
+                SpielInstanz.wortEingeben(wortScanner);
+            }
+        }
 
         // Spiel beginnen (wenn Versuche kleiner 6 or no winner)
-        while(SpielInstanz.getAnzahlFehlVersuche() < 6 && !SpielInstanz.isHasWon()){
+        while (SpielInstanz.getAnzahlFehlVersuche() < 6 && !SpielInstanz.isHasWon()) {
             SpielInstanz.buchstabenEingeben(wortScanner);
         }
 
         // Prüfe auf Gewonnen oder Verloren
-        if(SpielInstanz.isHasWon()) {
+        if (SpielInstanz.isHasWon()) {
             System.out.println("Sehr gut! GEWONNEN mit: " + SpielInstanz.getAnzahlFehlVersuche() + " Fehlversuchen!");
         } else {
             System.out.println("Leider VERLOREN mit: " + SpielInstanz.getAnzahlFehlVersuche() + " Fehlversuchen!");
