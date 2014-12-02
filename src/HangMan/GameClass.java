@@ -164,6 +164,9 @@ public class GameClass {
 
         //Matchstring initialisieren und mit "_" füllen
         initMatchString();
+
+        //leeren Galgen ausgeben
+        zeichneGalgen(0);
     }
 
     protected void startSingleplayer() throws IOException, InterruptedException {
@@ -177,6 +180,8 @@ public class GameClass {
         //Matchstring initialisieren und mit "_" füllen
         initMatchString();
 
+        //leeren Galgen ausgeben
+        zeichneGalgen(0);
     }
 
     /*
@@ -285,7 +290,7 @@ public class GameClass {
         int randomNumber;
 
         //read from deWords.dic
-        dicWords = readLines("./HangMan/deWords.dic");
+        dicWords = readLines("./src/HangMan/deWords.dic");
         randomNumber = randInt(0, dicWords.length);
 
         return dicWords[randomNumber];
