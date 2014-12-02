@@ -285,7 +285,7 @@ public class GameClass {
         int randomNumber;
 
         //read from deWords.dic
-        dicWords = readLines("deWords.dic");
+        dicWords = readLines("./HangMan/deWords.dic");
         randomNumber = randInt(0, dicWords.length);
 
         return dicWords[randomNumber];
